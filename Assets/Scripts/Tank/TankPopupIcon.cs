@@ -1,36 +1,39 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class TankPopupIcon : MonoBehaviour
+namespace Tank
 {
-    public GameObject scanIcon;
-    public GameObject chaseIcon;
-
-    public void LoadScanIcon()
+    public class TankPopupIcon : MonoBehaviour
     {
-        scanIcon.SetActive(true);
-        chaseIcon.SetActive(false);
-    }
+        public GameObject scanIcon;
+        public GameObject chaseIcon;
 
-    public void LoadChaseIcon()
-    {
-        scanIcon.SetActive(false);
-        chaseIcon.SetActive(true);
-    }
+        public void LoadScanIcon()
+        {
+            scanIcon.SetActive(true);
+            chaseIcon.SetActive(false);
+        }
 
-    public void DisableAllIcons()
-    {
-        scanIcon.SetActive(false);
-        chaseIcon.SetActive(false);
-    }
+        public void LoadChaseIcon()
+        {
+            scanIcon.SetActive(false);
+            chaseIcon.SetActive(true);
+        }
 
-    private static IEnumerator ShowIconForDuration(GameObject icon, int duration)
-    {
-        icon.SetActive(true);
-        if (duration <= 0) yield break;
+        public void DisableAllIcons()
+        {
+            scanIcon.SetActive(false);
+            chaseIcon.SetActive(false);
+        }
 
-        yield return new WaitForSeconds(duration);
+        private static IEnumerator ShowIconForDuration(GameObject icon, int duration)
+        {
+            icon.SetActive(true);
+            if (duration <= 0) yield break;
 
-        icon.SetActive(false);
+            yield return new WaitForSeconds(duration);
+
+            icon.SetActive(false);
+        }
     }
 }

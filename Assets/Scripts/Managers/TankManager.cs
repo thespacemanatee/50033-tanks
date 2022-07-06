@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using PluggableAI;
+using Tank;
 using UnityEngine;
 
 namespace Managers

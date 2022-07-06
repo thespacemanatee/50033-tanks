@@ -1,10 +1,12 @@
 ﻿using System;
-using PluggableAI.Decision;
 
-[Serializable]
-public class Transition
+namespace PluggableAI
 {
-    public Decision decision;
-    public State trueState;
-    public State falseState;
+    [Serializable]
+    public class Transition
+    {
+        public Decision.Decision decision;
+        public State trueState;
+        public State falseState;
+    }
 }

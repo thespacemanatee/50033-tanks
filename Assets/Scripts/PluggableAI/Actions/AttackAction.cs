@@ -1,25 +1,28 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "PluggableAI/Actions/Attack")]
-public class AttackAction : Action
+namespace PluggableAI.Actions
 {
-    public override void Act(StateController controller)
+    [CreateAssetMenu(menuName = "PluggableAI/Actions/Attack")]
+    public class AttackAction : Action
     {
-        Attack(controller);
-    }
+        public override void Act(StateController controller)
+        {
+            Attack(controller);
+        }
 
-    private void Attack(StateController controller)
-    {
-        RaycastHit hit;
-        var position = controller.eyes.position;
-        var radius = controller.enemyStats.lookSphereCastRadius;
-        var direction = controller.eyes.forward;
-        var attackRange = controller.enemyStats.attackRange;
+        private void Attack(StateController controller)
+        {
+            RaycastHit hit;
+            var position = controller.eyes.position;
+            var radius = controller.enemyStats.lookSphereCastRadius;
+            var direction = controller.eyes.forward;
+            var attackRange = controller.enemyStats.attackRange;
 
-        Debug.DrawRay(position, direction.normalized * attackRange, Color.red);
+            Debug.DrawRay(position, direction.normalized * attackRange, Color.red);
 
-        if (Physics.SphereCast(position, radius, direction, out hit, attackRange) && hit.collider.CompareTag("Player"))
-            if (controller.CheckIfCountDownElapsed(controller.enemyStats.attackRate))
-                controller.tankShooting.Fire(controller.enemyStats.attackForce, controller.enemyStats.attackRate);
+            if (Physics.SphereCast(position, radius, direction, out hit, attackRange) && hit.collider.CompareTag("Player"))
+                if (controller.CheckIfCountDownElapsed(controller.enemyStats.attackRate))
+                    controller.tankShooting.Fire(controller.enemyStats.attackForce, controller.enemyStats.attackRate);
+        }
     }
 }
