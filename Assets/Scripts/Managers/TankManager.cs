@@ -7,6 +7,7 @@ namespace Managers
     [Serializable]
     public class TankManager
     {
+        public GameConstants gameConstants;
         public Color m_PlayerColor;
         public Transform m_SpawnPoint;
         [HideInInspector] public int m_PlayerNumber;
@@ -31,8 +32,9 @@ namespace Managers
             m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
             m_ColoredPlayerText =
                 $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>AI {m_PlayerNumber - 1}</color>";
+            m_Wins = gameConstants.tankScores[m_PlayerNumber - 1];
 
-            var renderers =  m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
+            var renderers = m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
 
             for (var i = 0; i < renderers.Length; i++) renderers[i].material.color = m_PlayerColor;
         }
@@ -49,9 +51,10 @@ namespace Managers
 
             m_ColoredPlayerText =
                 $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>PLAYER {m_PlayerNumber}</color>";
+            m_Wins = gameConstants.tankScores[m_PlayerNumber - 1];
 
             // Get tank renderers specifically as we don't want to color the meshes in Canvas etc.
-            var renderers =  m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
+            var renderers = m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
 
             for (var i = 0; i < renderers.Length; i++) renderers[i].material.color = m_PlayerColor;
         }

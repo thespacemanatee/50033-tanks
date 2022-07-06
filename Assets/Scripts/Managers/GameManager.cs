@@ -13,6 +13,7 @@ namespace Managers
         public int m_NumRoundsToWin = 5;
         public float m_StartDelay = 3f;
         public float m_EndDelay = 3f;
+        public GameConstants m_GameConstants;
         public CameraControl m_CameraControl;
         public Text m_MessageText;
         public GameObject[] m_TankPrefabs;
@@ -26,8 +27,9 @@ namespace Managers
         private WaitForSeconds m_StartWait;
 
 
-        private void Start()
+        public void StartGame()
         {
+            m_RoundNumber = m_GameConstants.currentRound;
             m_StartWait = new WaitForSeconds(m_StartDelay);
             m_EndWait = new WaitForSeconds(m_EndDelay);
 
@@ -112,7 +114,13 @@ namespace Managers
             m_RoundWinner = null;
 
             m_RoundWinner = GetRoundWinner();
-            if (m_RoundWinner != null) m_RoundWinner.m_Wins++;
+            if (m_RoundWinner != null)
+            {
+                m_RoundWinner.m_Wins++;
+                m_GameConstants.tankScores[m_RoundWinner.m_PlayerNumber - 1]++;
+            }
+
+            m_GameConstants.currentRound = m_RoundNumber;
 
             m_GameWinner = GetGameWinner();
 
