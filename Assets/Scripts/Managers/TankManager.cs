@@ -77,13 +77,13 @@ namespace Managers
             m_CanvasGameObject.SetActive(true);
         }
 
-        public void Reset()
+        public void Reset(bool enabled)
         {
             m_Instance.transform.position = m_SpawnPoint.position;
             m_Instance.transform.rotation = m_SpawnPoint.rotation;
 
             m_Instance.SetActive(false);
-            m_Instance.SetActive(true);
+            m_Instance.SetActive(enabled);
         }
     }
 }

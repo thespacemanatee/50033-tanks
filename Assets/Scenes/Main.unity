@@ -944,10 +944,6 @@ MonoBehaviour:
   - {fileID: 1365403484819210, guid: b05848c6a3046fc4d8faf98057970bf1, type: 3}
   - {fileID: 173472, guid: 7ff6571596052b34c9b5fc1ce3fd7244, type: 3}
   - {fileID: 173472, guid: e0e0cc2cecbfad342beba6cc62d6b312, type: 3}
-  - {fileID: 173472, guid: 7ff6571596052b34c9b5fc1ce3fd7244, type: 3}
-  - {fileID: 173472, guid: e0e0cc2cecbfad342beba6cc62d6b312, type: 3}
-  - {fileID: 173472, guid: 7ff6571596052b34c9b5fc1ce3fd7244, type: 3}
-  - {fileID: 173472, guid: e0e0cc2cecbfad342beba6cc62d6b312, type: 3}
   m_Tanks:
   - m_PlayerColor: {r: 0.16470589, g: 0.39215687, b: 0.69803923, a: 1}
     m_SpawnPoint: {fileID: 1223661147}

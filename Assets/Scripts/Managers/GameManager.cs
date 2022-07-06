@@ -45,12 +45,16 @@ namespace Managers
             m_Tanks[0].m_PlayerNumber = 1;
             m_Tanks[0].SetupPlayerTank();
 
-            for (var i = 1; i < m_Tanks.Length; i++)
+            for (var i = 0; i < m_Tanks.Length - 1; i++)
             {
-                m_Tanks[i].m_Instance =
-                    Instantiate(m_TankPrefabs[i], m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation);
-                m_Tanks[i].m_PlayerNumber = i + 1;
-                m_Tanks[i].SetupAI(wayPointsForAI);
+                var currAIIndex = i + 1;
+                m_Tanks[currAIIndex].m_Instance =
+                    // Alternate between spawning Chaser and Scanner
+                    Instantiate(m_TankPrefabs[i % (m_TankPrefabs.Length - 1) + 1],
+                        m_Tanks[currAIIndex].m_SpawnPoint.position,
+                        m_Tanks[currAIIndex].m_SpawnPoint.rotation);
+                m_Tanks[currAIIndex].m_PlayerNumber = currAIIndex + 1;
+                m_Tanks[currAIIndex].SetupAI(wayPointsForAI);
             }
         }
 
@@ -97,7 +101,7 @@ namespace Managers
 
             m_MessageText.text = string.Empty;
 
-            while (!IsPlayerDead()) yield return null;
+            while (!IsPlayerDeadOrLastManStanding()) yield return null;
         }
 
 
@@ -119,9 +123,13 @@ namespace Managers
         }
 
 
-        private bool IsPlayerDead()
+        /// <summary>
+        /// Check if player is dead or the last man standing.
+        /// </summary>
+        /// <returns>True if player is dead or last man standing, false otherwise.</returns>
+        private bool IsPlayerDeadOrLastManStanding()
         {
-            return !m_Tanks[0].m_Instance.activeSelf;
+            return !m_Tanks[0].m_Instance.activeSelf || m_Tanks.Count(tank => tank.m_Instance.activeSelf) == 1;
         }
 
         private TankManager GetRoundWinner()
@@ -162,19 +170,21 @@ namespace Managers
 
         private void ResetAllTanks()
         {
-            for (var i = 0; i < m_Tanks.Length; i++) m_Tanks[i].Reset();
+            var playerWins = m_Tanks[0].m_Wins;
+            // Progressively enable more tanks as player attains more kills
+            for (var i = 0; i < m_Tanks.Length; i++) m_Tanks[i].Reset(i - playerWins < m_TankPrefabs.Length);
         }
 
 
         private void EnableTankControl()
         {
-            for (var i = 0; i < m_Tanks.Length; i++) m_Tanks[i].EnableControl();
+            foreach (var t in m_Tanks) t.EnableControl();
         }
 
 
         private void DisableTankControl()
         {
-            for (var i = 0; i < m_Tanks.Length; i++) m_Tanks[i].DisableControl();
+            foreach (var t in m_Tanks) t.DisableControl();
         }
     }
 }
