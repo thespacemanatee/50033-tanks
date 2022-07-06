@@ -2,14 +2,13 @@
 
 public class ShellExplosion : MonoBehaviour
 {
-
     public LayerMask m_TankMask;
-    public ParticleSystem m_ExplosionParticles;       
-    public AudioSource m_ExplosionAudio;              
-    public float m_MaxDamage = 100f;                  
-    public float m_ExplosionForce = 1000f;            
-    public float m_MaxLifeTime = 2f;                  
-    public float m_ExplosionRadius = 5f;              
+    public ParticleSystem m_ExplosionParticles;
+    public AudioSource m_ExplosionAudio;
+    public float m_MaxDamage = 100f;
+    public float m_ExplosionForce = 1000f;
+    public float m_MaxLifeTime = 2f;
+    public float m_ExplosionRadius = 5f;
 
 
     private void Start()
@@ -21,9 +20,9 @@ public class ShellExplosion : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Find all the tanks in an area around the shell and damage them.
-        Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
+        var colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
 
-        for (int i = 0; i < colliders.Length; ++i)
+        for (var i = 0; i < colliders.Length; ++i)
         {
             var targetRigidbody = colliders[i].GetComponent<Rigidbody>();
             if (targetRigidbody == null) continue;
@@ -33,7 +32,7 @@ public class ShellExplosion : MonoBehaviour
             var targetHealth = targetRigidbody.GetComponent<TankHealth>();
             if (targetHealth == null) continue;
 
-            float damage = CalculateDamage(targetRigidbody.position);
+            var damage = CalculateDamage(targetRigidbody.position);
             targetHealth.TakeDamage(damage);
         }
 
@@ -47,14 +46,13 @@ public class ShellExplosion : MonoBehaviour
     private float CalculateDamage(Vector3 targetPosition)
     {
         // Calculate the amount of damage a target should take based on it's position.
-        Vector3 explosionToTarget = targetPosition - transform.position;
-        float explosionDistance = explosionToTarget.magnitude;
-        float relativeDistance = (m_ExplosionRadius - explosionDistance) / m_ExplosionRadius;
+        var explosionToTarget = targetPosition - transform.position;
+        var explosionDistance = explosionToTarget.magnitude;
+        var relativeDistance = (m_ExplosionRadius - explosionDistance) / m_ExplosionRadius;
 
-        float damage = relativeDistance * m_MaxDamage;
+        var damage = relativeDistance * m_MaxDamage;
         damage = Mathf.Max(0f, damage);
 
         return damage;
     }
-
 }

@@ -2,16 +2,16 @@
 
 public class CameraControl : MonoBehaviour
 {
-    public float m_DampTime = 0.2f;                 
-    public float m_ScreenEdgeBuffer = 4f;           
-    public float m_MinSize = 6.5f;                  
-    [HideInInspector] public Transform[] m_Targets; 
+    public float m_DampTime = 0.2f;
+    public float m_ScreenEdgeBuffer = 4f;
+    public float m_MinSize = 6.5f;
+    [HideInInspector] public Transform[] m_Targets;
 
 
-    private Camera m_Camera;                        
-    private float m_ZoomSpeed;                      
-    private Vector3 m_MoveVelocity;                 
-    private Vector3 m_DesiredPosition;              
+    private Camera m_Camera;
+    private Vector3 m_DesiredPosition;
+    private Vector3 m_MoveVelocity;
+    private float m_ZoomSpeed;
 
 
     private void Awake()
@@ -37,10 +37,10 @@ public class CameraControl : MonoBehaviour
 
     private void FindAveragePosition()
     {
-        Vector3 averagePos = new Vector3();
-        int numTargets = 0;
+        var averagePos = new Vector3();
+        var numTargets = 0;
 
-        for (int i = 0; i < m_Targets.Length; i++)
+        for (var i = 0; i < m_Targets.Length; i++)
         {
             if (!m_Targets[i].gameObject.activeSelf)
                 continue;
@@ -60,31 +60,32 @@ public class CameraControl : MonoBehaviour
 
     private void Zoom()
     {
-        float requiredSize = FindRequiredSize();
-        m_Camera.orthographicSize = Mathf.SmoothDamp(m_Camera.orthographicSize, requiredSize, ref m_ZoomSpeed, m_DampTime);
+        var requiredSize = FindRequiredSize();
+        m_Camera.orthographicSize =
+            Mathf.SmoothDamp(m_Camera.orthographicSize, requiredSize, ref m_ZoomSpeed, m_DampTime);
     }
 
 
     private float FindRequiredSize()
     {
-        Vector3 desiredLocalPos = transform.InverseTransformPoint(m_DesiredPosition);
+        var desiredLocalPos = transform.InverseTransformPoint(m_DesiredPosition);
 
-        float size = 0f;
+        var size = 0f;
 
-        for (int i = 0; i < m_Targets.Length; i++)
+        for (var i = 0; i < m_Targets.Length; i++)
         {
             if (!m_Targets[i].gameObject.activeSelf)
                 continue;
 
-            Vector3 targetLocalPos = transform.InverseTransformPoint(m_Targets[i].position);
+            var targetLocalPos = transform.InverseTransformPoint(m_Targets[i].position);
 
-            Vector3 desiredPosToTarget = targetLocalPos - desiredLocalPos;
+            var desiredPosToTarget = targetLocalPos - desiredLocalPos;
 
-            size = Mathf.Max (size, Mathf.Abs (desiredPosToTarget.y));
+            size = Mathf.Max(size, Mathf.Abs(desiredPosToTarget.y));
 
-            size = Mathf.Max (size, Mathf.Abs (desiredPosToTarget.x) / m_Camera.aspect);
+            size = Mathf.Max(size, Mathf.Abs(desiredPosToTarget.x) / m_Camera.aspect);
         }
-        
+
         size += m_ScreenEdgeBuffer;
 
         size = Mathf.Max(size, m_MinSize);

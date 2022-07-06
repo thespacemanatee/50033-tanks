@@ -13,18 +13,12 @@ public class TankShooting : MonoBehaviour
     public float m_MinLaunchForce = 15f;
     public float m_MaxLaunchForce = 30f;
     public float m_MaxChargeTime = 0.75f;
+    private float m_ChargeSpeed;
+    private float m_CurrentLaunchForce;
 
     private string m_FireButton;
-    private float m_CurrentLaunchForce;
-    private float m_ChargeSpeed;
     private bool m_Fired;
     private float nextFireTime;
-
-    private void OnEnable()
-    {
-        m_CurrentLaunchForce = m_MinLaunchForce;
-        m_AimSlider.value = m_MinLaunchForce;
-    }
 
 
     private void Start()
@@ -62,6 +56,12 @@ public class TankShooting : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        m_CurrentLaunchForce = m_MinLaunchForce;
+        m_AimSlider.value = m_MinLaunchForce;
+    }
+
 
     public void Fire(float launchForce, float fireRate)
     {
@@ -70,8 +70,8 @@ public class TankShooting : MonoBehaviour
         nextFireTime = Time.time + fireRate;
         m_Fired = true;
 
-        Rigidbody shellInstance =
-            Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+        var shellInstance =
+            Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
         shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
 
         m_ShootingAudio.clip = m_FireClip;
@@ -79,5 +79,4 @@ public class TankShooting : MonoBehaviour
 
         m_CurrentLaunchForce = m_MinLaunchForce;
     }
-    
 }

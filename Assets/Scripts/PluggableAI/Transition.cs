@@ -1,9 +1,9 @@
-﻿[System.Serializable]
+﻿using System;
+
+[Serializable]
 public class Transition
 {
-
-	public Decision decision;
-	public State trueState;
-	public State falseState;
-
+    public Decision decision;
+    public State trueState;
+    public State falseState;
 }
