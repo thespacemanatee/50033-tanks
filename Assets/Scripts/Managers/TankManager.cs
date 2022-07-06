@@ -7,7 +7,7 @@ namespace Managers
     [Serializable]
     public class TankManager
     {
-        public GameConstants gameConstants;
+        public GameConstants m_GameConstants;
         public Color m_PlayerColor;
         public Transform m_SpawnPoint;
         [HideInInspector] public int m_PlayerNumber;
@@ -32,11 +32,12 @@ namespace Managers
             m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
             m_ColoredPlayerText =
                 $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>AI {m_PlayerNumber - 1}</color>";
-            m_Wins = gameConstants.tankScores[m_PlayerNumber - 1];
+            // Reload wins from save file
+            m_Wins = m_GameConstants.tankScores[m_PlayerNumber - 1];
 
             var renderers = m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
 
-            for (var i = 0; i < renderers.Length; i++) renderers[i].material.color = m_PlayerColor;
+            foreach (var t in renderers) t.material.color = m_PlayerColor;
         }
 
 
@@ -51,12 +52,13 @@ namespace Managers
 
             m_ColoredPlayerText =
                 $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>PLAYER {m_PlayerNumber}</color>";
-            m_Wins = gameConstants.tankScores[m_PlayerNumber - 1];
+            // Reload wins from save file
+            m_Wins = m_GameConstants.tankScores[m_PlayerNumber - 1];
 
             // Get tank renderers specifically as we don't want to color the meshes in Canvas etc.
             var renderers = m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
 
-            for (var i = 0; i < renderers.Length; i++) renderers[i].material.color = m_PlayerColor;
+            foreach (var t in renderers) t.material.color = m_PlayerColor;
         }
 
         public void DisableControl()
@@ -80,6 +82,10 @@ namespace Managers
             m_CanvasGameObject.SetActive(true);
         }
 
+        /// <summary>
+        /// Reset this tank.
+        /// </summary>
+        /// <param name="enabled">If enabled, then this tank will be active for the next round.</param>
         public void Reset(bool enabled)
         {
             m_Instance.transform.position = m_SpawnPoint.position;

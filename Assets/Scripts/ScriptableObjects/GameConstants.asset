@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b941361bd854181841500269f09959, type: 3}
   m_Name: GameConstants
   m_EditorClassIdentifier: 
-  currentRound: 0
-  tankScores: 00000000000000000000000000000000000000000000000000000000
+  currentRound: 5
+  tankScores: 03000000010000000000000000000000000000000100000000000000

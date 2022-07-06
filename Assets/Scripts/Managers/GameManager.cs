@@ -25,6 +25,7 @@ namespace Managers
         private int m_RoundNumber;
         private TankManager m_RoundWinner;
         private WaitForSeconds m_StartWait;
+        private IEnumerator m_GameLoop;
 
 
         public void StartGame()
@@ -36,7 +37,20 @@ namespace Managers
             SpawnAllTanks();
             SetCameraTargets();
 
-            StartCoroutine(GameLoop());
+            StartCoroutine(nameof(GameLoop));
+        }
+
+        public void RestartGame()
+        {
+            m_RoundNumber = 0;
+            m_GameConstants.ResetGameState();
+            foreach (var tank in m_Tanks)
+            {
+                tank.m_Wins = m_GameConstants.tankScores[tank.m_PlayerNumber - 1];
+            }
+
+            StopAllCoroutines();
+            StartCoroutine(nameof(GameLoop));
         }
 
 
@@ -78,7 +92,11 @@ namespace Managers
             yield return StartCoroutine(RoundPlaying());
             yield return StartCoroutine(RoundEnding());
 
-            if (m_GameWinner != null) SceneManager.LoadScene(0);
+            if (m_GameWinner != null)
+            {
+                m_GameConstants.ResetGameState();
+                SceneManager.LoadScene(0);
+            }
             else StartCoroutine(GameLoop());
         }
 
