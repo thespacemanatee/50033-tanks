@@ -12,5 +12,6 @@ public class ChaseAction : Action
     {
         controller.navMeshAgent.destination = controller.chaseTarget.position;
         controller.navMeshAgent.isStopped = false;
+        controller.popupIcon.LoadChaseIcon();
     }
 }

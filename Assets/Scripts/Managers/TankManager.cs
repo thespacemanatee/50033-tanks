@@ -32,7 +32,7 @@ namespace Managers
             m_ColoredPlayerText =
                 $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>PLAYER {m_PlayerNumber}</color>";
 
-            var renderers = m_Instance.GetComponentsInChildren<MeshRenderer>();
+            var renderers =  m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
 
             for (var i = 0; i < renderers.Length; i++) renderers[i].material.color = m_PlayerColor;
         }
@@ -50,7 +50,7 @@ namespace Managers
             m_ColoredPlayerText =
                 $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>PLAYER {m_PlayerNumber}</color>";
 
-            var renderers = m_Instance.GetComponentsInChildren<MeshRenderer>();
+            var renderers =  m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
 
             for (var i = 0; i < renderers.Length; i++) renderers[i].material.color = m_PlayerColor;
         }
