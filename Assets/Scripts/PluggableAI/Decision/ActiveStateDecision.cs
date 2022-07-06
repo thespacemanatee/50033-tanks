@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "PluggableAI/Decisions/ActiveState")]
-public class ActiveStateDecision : Decision
+namespace PluggableAI.Decision
 {
-    public override bool Decide(StateController controller)
+    [CreateAssetMenu(menuName = "PluggableAI/Decisions/ActiveState")]
+    public class ActiveStateDecision : Decision
     {
-        var chaseTargetIsActive = controller.chaseTarget.gameObject.activeSelf;
-        return chaseTargetIsActive;
+        public override bool Decide(StateController controller)
+        {
+            var chaseTargetIsActive = controller.chaseTarget.gameObject.activeSelf;
+            return chaseTargetIsActive;
+        }
     }
 }

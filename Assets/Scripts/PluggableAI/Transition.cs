@@ -1,4 +1,5 @@
 ﻿using System;
+using PluggableAI.Decision;
 
 [Serializable]
 public class Transition

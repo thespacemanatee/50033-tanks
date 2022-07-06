@@ -10358,7 +10358,7 @@ GameObject:
   - component: {fileID: 114939632423205664}
   m_Layer: 9
   m_Name: AITankScanner
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10660,7 +10660,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3140013abe184de08c8f951312341e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupIcon: {fileID: 3070485799629150928}
   scanIcon: {fileID: 3070485799629150928}
   chaseIcon: {fileID: 7754058843161587231}
 --- !u!114 &114705808874343242
@@ -10703,6 +10702,7 @@ MonoBehaviour:
   remainState: {fileID: 11400000, guid: 0c94314c6282a9d4194a682929995613, type: 2}
   navMeshAgent: {fileID: 0}
   tankShooting: {fileID: 0}
+  popupIcon: {fileID: 0}
   wayPointList: []
   nextWayPoint: 0
   chaseTarget: {fileID: 0}
@@ -11139,7 +11139,7 @@ GameObject:
   - component: {fileID: 450636666224884784}
   - component: {fileID: 4156037916404734155}
   - component: {fileID: 2398152346350592766}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ChaseIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

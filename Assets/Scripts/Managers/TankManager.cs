@@ -30,7 +30,7 @@ namespace Managers
 
             m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
             m_ColoredPlayerText =
-                $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>PLAYER {m_PlayerNumber}</color>";
+                $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>AI {m_PlayerNumber - 1}</color>";
 
             var renderers =  m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
 
@@ -50,6 +50,7 @@ namespace Managers
             m_ColoredPlayerText =
                 $"<color=#{ColorUtility.ToHtmlStringRGB(m_PlayerColor)}>PLAYER {m_PlayerNumber}</color>";
 
+            // Get tank renderers specifically as we don't want to color the meshes in Canvas etc.
             var renderers =  m_Instance.transform.Find("TankRenderers").GetComponentsInChildren<MeshRenderer>();
 
             for (var i = 0; i < renderers.Length; i++) renderers[i].material.color = m_PlayerColor;

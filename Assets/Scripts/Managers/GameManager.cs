@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -96,7 +97,7 @@ namespace Managers
 
             m_MessageText.text = string.Empty;
 
-            while (!OneTankLeft()) yield return null;
+            while (!IsPlayerDead()) yield return null;
         }
 
 
@@ -118,33 +119,19 @@ namespace Managers
         }
 
 
-        private bool OneTankLeft()
+        private bool IsPlayerDead()
         {
-            var numTanksLeft = 0;
-
-            for (var i = 0; i < m_Tanks.Length; i++)
-                if (m_Tanks[i].m_Instance.activeSelf)
-                    numTanksLeft++;
-
-            return numTanksLeft <= 1;
+            return !m_Tanks[0].m_Instance.activeSelf;
         }
 
         private TankManager GetRoundWinner()
         {
-            for (var i = 0; i < m_Tanks.Length; i++)
-                if (m_Tanks[i].m_Instance.activeSelf)
-                    return m_Tanks[i];
-
-            return null;
+            return m_Tanks.FirstOrDefault(t => t.m_Instance.activeSelf);
         }
 
         private TankManager GetGameWinner()
         {
-            for (var i = 0; i < m_Tanks.Length; i++)
-                if (m_Tanks[i].m_Wins == m_NumRoundsToWin)
-                    return m_Tanks[i];
-
-            return null;
+            return m_Tanks.FirstOrDefault(t => t.m_Wins == m_NumRoundsToWin);
         }
 
 
@@ -152,13 +139,19 @@ namespace Managers
         {
             var sb = new StringBuilder();
 
-            if (m_RoundWinner != null) sb.Append($"{m_RoundWinner.m_ColoredPlayerText} WINS THE ROUND!");
-            else sb.Append("DRAW!");
+            if (m_RoundWinner != null)
+            {
+                sb.AppendLine(m_RoundWinner.m_PlayerNumber == 1 ? "You won the round!" : "You lost this round!");
+            }
+            else
+            {
+                sb.Append("DRAW!");
+            }
 
             sb.Append("\n\n\n\n");
 
-            for (var i = 0; i < m_Tanks.Length; i++)
-                sb.AppendLine($"{m_Tanks[i].m_ColoredPlayerText}: {m_Tanks[i].m_Wins} WINS");
+            foreach (var t in m_Tanks)
+                sb.AppendLine($"{t.m_ColoredPlayerText}: {t.m_Wins} WINS");
 
             if (m_GameWinner != null)
                 sb.Append($"{m_GameWinner.m_ColoredPlayerText} WINS THE GAME!");
