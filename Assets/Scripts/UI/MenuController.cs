@@ -6,11 +6,14 @@ namespace UI
 {
     public class MenuController : MonoBehaviour
     {
+        // UI elements
         public GameConstants gameConstants;
         public Text currentRoundText;
         public Text currentScoreText;
         public Button startButton;
         public Button restartButton;
+
+        // Events
         public UnityEvent onGameStart;
         public UnityEvent onGameRestart;
 
@@ -21,10 +24,9 @@ namespace UI
         private void Start()
         {
             m_Background = GetComponent<Image>();
+            // Setup main menu UI based on saved game constants
             if (gameConstants.currentRound == 0)
             {
-                currentRoundText.enabled = false;
-                currentScoreText.enabled =  false;
                 restartButton.gameObject.SetActive(false);
             }
             else
@@ -36,10 +38,11 @@ namespace UI
         // Update is called once per frame
         private void Update()
         {
+            // Poll for changes in game constants and update menu UI accordingly
             currentRoundText.text = $"Current round: {(gameConstants.currentRound + 1).ToString()}";
             currentScoreText.text = $"Current score: {(gameConstants.tankScores[0]).ToString()}";
-            currentRoundText.enabled = m_GameStarted;
-            currentScoreText.enabled = m_GameStarted;
+            currentRoundText.enabled = m_GameStarted || gameConstants.currentRound > 0;
+            currentScoreText.enabled = m_GameStarted || gameConstants.currentRound > 0;
 
             if (Input.GetKeyDown(KeyCode.P))
             {

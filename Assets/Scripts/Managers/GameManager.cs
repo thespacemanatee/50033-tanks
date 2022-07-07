@@ -19,18 +19,14 @@ namespace Managers
         public GameObject[] m_TankPrefabs;
         public TankManager[] m_Tanks;
         public List<Transform> wayPointsForAI;
+
         private WaitForSeconds m_EndWait;
         private TankManager m_GameWinner;
-
-        private int m_RoundNumber;
         private TankManager m_RoundWinner;
         private WaitForSeconds m_StartWait;
-        private IEnumerator m_GameLoop;
-
 
         public void StartGame()
         {
-            m_RoundNumber = m_GameConstants.currentRound;
             m_StartWait = new WaitForSeconds(m_StartDelay);
             m_EndWait = new WaitForSeconds(m_EndDelay);
 
@@ -42,14 +38,15 @@ namespace Managers
 
         public void RestartGame()
         {
-            m_RoundNumber = 0;
             m_GameConstants.ResetGameState();
             foreach (var tank in m_Tanks)
             {
                 tank.m_Wins = m_GameConstants.tankScores[tank.m_PlayerNumber - 1];
             }
 
+            // Stop all coroutines first, else multiple game loops will be running at once
             StopAllCoroutines();
+            // Restart the game loop
             StartCoroutine(nameof(GameLoop));
         }
 
@@ -108,8 +105,7 @@ namespace Managers
 
             m_CameraControl.SetStartPositionAndSize();
 
-            m_RoundNumber++;
-            m_MessageText.text = $"ROUND {m_RoundNumber}";
+            m_MessageText.text = $"ROUND {m_GameConstants.currentRound + 1}";
 
             yield return m_StartWait;
         }
@@ -130,7 +126,6 @@ namespace Managers
             DisableTankControl();
 
             m_RoundWinner = null;
-
             m_RoundWinner = GetRoundWinner();
             if (m_RoundWinner != null)
             {
@@ -138,8 +133,7 @@ namespace Managers
                 m_GameConstants.tankScores[m_RoundWinner.m_PlayerNumber - 1]++;
             }
 
-            m_GameConstants.currentRound = m_RoundNumber;
-
+            m_GameConstants.currentRound++;
             m_GameWinner = GetGameWinner();
 
             var message = EndMessage();
@@ -184,11 +178,9 @@ namespace Managers
 
             sb.Append("\n\n\n\n");
 
-            foreach (var t in m_Tanks)
-                sb.AppendLine($"{t.m_ColoredPlayerText}: {t.m_Wins} WINS");
+            foreach (var t in m_Tanks) sb.AppendLine($"{t.m_ColoredPlayerText}: {t.m_Wins} WINS");
 
-            if (m_GameWinner != null)
-                sb.Append($"{m_GameWinner.m_ColoredPlayerText} WINS THE GAME!");
+            if (m_GameWinner != null) sb.Append($"{m_GameWinner.m_ColoredPlayerText} WINS THE GAME!");
 
             return sb.ToString();
         }
