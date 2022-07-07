@@ -1,18 +1,20 @@
-﻿using PluggableAI;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "PluggableAI/Actions/Chase")]
-public class ChaseAction : Action
+namespace PluggableAI.Actions
 {
-    public override void Act(StateController controller)
+    [CreateAssetMenu(menuName = "PluggableAI/Actions/Chase")]
+    public class ChaseAction : Action
     {
-        Chase(controller);
-    }
+        public override void Act(StateController controller)
+        {
+            Chase(controller);
+        }
 
-    private void Chase(StateController controller)
-    {
-        controller.navMeshAgent.destination = controller.chaseTarget.position;
-        controller.navMeshAgent.isStopped = false;
-        controller.popupIcon.LoadChaseIcon();
+        private static void Chase(StateController controller)
+        {
+            controller.navMeshAgent.destination = controller.chaseTarget.position;
+            controller.navMeshAgent.isStopped = false;
+            controller.popupIcon.LoadChaseIcon();
+        }
     }
 }

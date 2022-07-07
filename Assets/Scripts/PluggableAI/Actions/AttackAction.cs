@@ -10,7 +10,7 @@ namespace PluggableAI.Actions
             Attack(controller);
         }
 
-        private void Attack(StateController controller)
+        private static void Attack(StateController controller)
         {
             RaycastHit hit;
             var position = controller.eyes.position;

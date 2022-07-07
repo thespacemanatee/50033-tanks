@@ -1,7 +1,9 @@
-﻿using PluggableAI;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class Action : ScriptableObject
+namespace PluggableAI.Actions
 {
-    public abstract void Act(StateController controller);
+    public abstract class Action : ScriptableObject
+    {
+        public abstract void Act(StateController controller);
+    }
 }
